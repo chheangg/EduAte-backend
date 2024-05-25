@@ -39,12 +39,12 @@ export class LocationService {
       return null;
     }
 
-    const isLocationExist = await this.locationRepository.findBy({
+    const isLocationExist = await this.locationRepository.findOneBy({
       country: countryName,
       city: cityName,
     });
 
-    if (isLocationExist.length !== 0) {
+    if (isLocationExist) {
       return null;
     }
 

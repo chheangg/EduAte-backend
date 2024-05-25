@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Opportunity } from '../opportunity/opportunity.entity';
 
 @Entity()
 export class Tag {
@@ -6,4 +13,7 @@ export class Tag {
   id: number;
   @Column()
   name: string;
+  @ManyToMany(() => Opportunity)
+  @JoinTable()
+  opportunities: Opportunity[];
 }
