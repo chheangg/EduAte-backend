@@ -6,13 +6,18 @@ import {
   ParseArrayPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { OpportunityService } from './opportunity.service';
 import { CreateOpportunityDto } from './create-opportunity.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 
 @Controller('/opportunities')
 export class OpportunityController {
   constructor(private readonly opportunityService: OpportunityService) {}
+
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAllOpportunitiesWithQueries(
     @Query('q') q: string,
