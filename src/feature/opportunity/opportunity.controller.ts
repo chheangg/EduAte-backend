@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseArrayPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { OpportunityService } from './opportunity.service';
 import { CreateOpportunityDto } from './create-opportunity.dto';
 
@@ -6,8 +14,23 @@ import { CreateOpportunityDto } from './create-opportunity.dto';
 export class OpportunityController {
   constructor(private readonly opportunityService: OpportunityService) {}
   @Get()
-  findAllOpportunities() {
-    return this.opportunityService.findAllOpportunities();
+  findAllOpportunitiesWithQueries(
+    @Query('q') q: string,
+    @Query('category_id') category_id: number,
+    @Query('location_id') location_id: number,
+    @Query(
+      'tag_ids',
+      new ParseArrayPipe({ items: Number, separator: ',', optional: true }),
+    )
+    tag_ids?: number[],
+  ) {
+    console.log(tag_ids);
+    return this.opportunityService.findAllOpportunitiesWithQueries({
+      q,
+      category_id,
+      location_id,
+      tag_ids,
+    });
   }
 
   @Get('/:opportunity_id')

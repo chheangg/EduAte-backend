@@ -40,5 +40,5 @@ export class CreateOpportunityDto {
   location_id: number;
 
   @IsOptional()
-  tags_id: number[];
+  tag_ids: number[];
 }

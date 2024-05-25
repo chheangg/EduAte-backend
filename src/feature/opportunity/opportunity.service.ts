@@ -6,6 +6,7 @@ import { CreateOpportunityDto } from './create-opportunity.dto';
 import { Category } from '../category/category.entity';
 import { Location } from '../location/location.entity';
 import { Tag } from '../tag/tag.entity';
+import { OpportunityQuery } from './opportunity-query.interface';
 
 @Injectable()
 export class OpportunityService {
@@ -24,6 +25,46 @@ export class OpportunityService {
     return this.opportunityRepository.find();
   }
 
+  findAllOpportunitiesWithQueries(
+    opportunityQuery: OpportunityQuery,
+  ): Promise<Opportunity[]> {
+    const queryBuilder =
+      this.opportunityRepository.createQueryBuilder('opportunity');
+
+    if (opportunityQuery.q) {
+      queryBuilder.andWhere('opportunity.name like :q', {
+        q: `%${opportunityQuery.q}%`,
+      });
+      queryBuilder.andWhere('opportunity.description like :q', {
+        q: `%${opportunityQuery.q}%`,
+      });
+    }
+
+    if (opportunityQuery.category_id) {
+      console.log(opportunityQuery);
+      queryBuilder.andWhere('opportunity.categoryId = :id', {
+        id: opportunityQuery.category_id,
+      });
+    }
+
+    if (opportunityQuery.location_id) {
+      queryBuilder.andWhere('opportunity.locationId = :id', {
+        id: opportunityQuery.location_id,
+      });
+    }
+    if (opportunityQuery.tag_ids) {
+      queryBuilder.innerJoin(
+        'opportunity.tags',
+        'tag',
+        'tag.id IN (:...tagIds)',
+        {
+          tagIds: opportunityQuery.tag_ids,
+        },
+      );
+    }
+    return queryBuilder.getMany();
+  }
+
   findOpportunity(id: number): Promise<Opportunity> {
     return this.opportunityRepository.findOneBy({ id });
   }
@@ -38,7 +79,7 @@ export class OpportunityService {
     opportunity.body = createOpportunityDto.body;
     opportunity.description = createOpportunityDto.description;
 
-    const { category_id, location_id, tags_id } = createOpportunityDto;
+    const { category_id, location_id, tag_ids } = createOpportunityDto;
 
     const category = await this.categoryRepository.findOneBy({
       id: category_id,
@@ -48,9 +89,9 @@ export class OpportunityService {
       id: location_id,
     });
 
-    if (tags_id) {
+    if (tag_ids) {
       const tags = await Promise.all(
-        tags_id.map(
+        tag_ids.map(
           async (tag_id) => await this.tagRepository.findOneBy({ id: tag_id }),
         ),
       );
