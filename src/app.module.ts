@@ -7,7 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './feature/user/user.module';
 import { OpportunityModule } from './feature/opportunity/opportunity.module';
 import { CategoryModule } from './feature/category/category.module';
-import { LocationModule } from './feature/Location/location.module';
+import { LocationModule } from './feature/location/location.module';
+import { TagModule } from './feature/tag/tag.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LocationModule } from './feature/Location/location.module';
     OpportunityModule,
     CategoryModule,
     LocationModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

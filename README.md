@@ -22,9 +22,15 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Edu-Ate Backend
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a backend application for the VenusHack Hackathon where it serves informations about opportunities to students and educators-alike.
+
+### Application Modeling
+
+![Application Model](images/eduate_uml.png)
+
+It starts with a simple idea that users can filter opportunities based on Category, Country, City and other additional tags. Users and educators would need a an .edu account to access the site and create opportunities for people to see.
 
 ## Installation
 
