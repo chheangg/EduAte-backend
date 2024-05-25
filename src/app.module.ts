@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './features/auth/auth.module';
+import { AuthModule } from './agt/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './features/user/user.module';
-import { OpportunityModule } from './features/opportunity/opportunity.module';
-import { CategoryModule } from './features/category/category.module';
+import { UserModule } from './agt/user/user.module';
+import { OpportunityModule } from './agt/opportunity/opportunity.module';
+import { CategoryModule } from './agt/category/category.module';
+import { LocationModule } from './agt/Location/location.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CategoryModule } from './features/category/category.module';
     UserModule,
     OpportunityModule,
     CategoryModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
