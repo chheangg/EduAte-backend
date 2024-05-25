@@ -5,6 +5,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './features/user/user.module';
+import { OpportunityModule } from './features/opportunity/opportunity.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserModule } from './features/user/user.module';
       logging: true,
     }),
     UserModule,
+    OpportunityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
