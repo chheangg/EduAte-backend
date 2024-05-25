@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './features/user/user.module';
 import { OpportunityModule } from './features/opportunity/opportunity.module';
+import { CategoryModule } from './features/category/category.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { OpportunityModule } from './features/opportunity/opportunity.module';
     }),
     UserModule,
     OpportunityModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
