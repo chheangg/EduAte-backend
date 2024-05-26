@@ -1,6 +1,7 @@
 export interface OpportunityQuery {
   q?: string;
   category_id?: number;
-  location_id?: number;
+  country?: string;
+  city?: string;
   tag_ids?: number[];
 }

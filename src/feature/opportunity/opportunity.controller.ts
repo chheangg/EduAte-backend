@@ -17,7 +17,8 @@ export class OpportunityController {
   findAllOpportunitiesWithQueries(
     @Query('q') q: string,
     @Query('category_id') category_id: number,
-    @Query('location_id') location_id: number,
+    @Query('country') country: string,
+    @Query('city') city: string,
     @Query(
       'tag_ids',
       new ParseArrayPipe({ items: Number, separator: ',', optional: true }),
@@ -27,7 +28,8 @@ export class OpportunityController {
     return this.opportunityService.findAllOpportunitiesWithQueries({
       q,
       category_id,
-      location_id,
+      country,
+      city,
       tag_ids,
     });
   }

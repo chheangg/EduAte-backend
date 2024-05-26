@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Opportunity } from './opportunity.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateOpportunityDto } from './create-opportunity.dto';
 import { Category } from '../category/category.entity';
@@ -28,46 +28,62 @@ export class OpportunityService {
   findAllOpportunitiesWithQueries(
     opportunityQuery: OpportunityQuery,
   ): Promise<Opportunity[]> {
-    const queryBuilder =
-      this.opportunityRepository.createQueryBuilder('opportunity');
+    // const queryBuilder =
+    //   this.opportunityRepository.createQueryBuilder('opportunity');
 
-    if (opportunityQuery.q) {
-      queryBuilder.andWhere('opportunity.name like :q', {
-        q: `%${opportunityQuery.q}%`,
-      });
-      queryBuilder.andWhere('opportunity.description like :q', {
-        q: `%${opportunityQuery.q}%`,
-      });
-    }
+    // if (opportunityQuery.q) {
+    //   queryBuilder.andWhere('opportunity.name like :q', {
+    //     q: `%${opportunityQuery.q}%`,
+    //   });
+    //   queryBuilder.andWhere('opportunity.description like :q', {
+    //     q: `%${opportunityQuery.q}%`,
+    //   });
+    // }
 
-    if (opportunityQuery.category_id) {
-      console.log(opportunityQuery);
-      queryBuilder.andWhere('opportunity.categoryId = :id', {
-        id: opportunityQuery.category_id,
-      });
-    }
+    // if (opportunityQuery.category_id) {
+    //   console.log(opportunityQuery);
+    //   queryBuilder.andWhere('opportunity.categoryId = :id', {
+    //     id: opportunityQuery.category_id,
+    //   });
+    // }
 
-    if (opportunityQuery.location_id) {
-      queryBuilder.andWhere('opportunity.locationId = :id', {
-        id: opportunityQuery.location_id,
-      });
-    }
-    if (opportunityQuery.tag_ids) {
-      queryBuilder.innerJoin(
-        'opportunity.tags',
-        'tag',
-        'tag.id IN (:...tagIds)',
-        {
-          tagIds: opportunityQuery.tag_ids,
+    // if (opportunityQuery.country) {
+    //   queryBuilder.andWhere('opportunity.locationId = :id', {
+    //     id: opportunityQuery.country,
+    //   });
+    // }
+    // if (opportunityQuery.tag_ids) {
+    //   queryBuilder.innerJoin(
+    //     'opportunity.tags',
+    //     'tag',
+    //     'tag.id IN (:...tagIds)',
+    //     {
+    //       tagIds: opportunityQuery.tag_ids,
+    //     },
+    //   );
+    // }
+
+    // return queryBuilder
+    //   .leftJoinAndSelect('opportunity.category', 'category')
+    //   .leftJoinAndSelect('opportunity.location', 'location')
+    //   .leftJoinAndSelect('opportunity.tags', 'tags')
+    //   .getMany();
+
+    const { country, city, category_id, q } = opportunityQuery;
+    return this.opportunityRepository.find({
+      relations: ['category', 'location', 'tags'],
+      where: {
+        location: {
+          country,
+          city,
         },
-      );
-    }
-
-    return queryBuilder
-      .leftJoinAndSelect('opportunity.category', 'category')
-      .leftJoinAndSelect('opportunity.location', 'location')
-      .leftJoinAndSelect('opportunity.tags', 'tags')
-      .getMany();
+        category: {
+          id: category_id,
+        },
+        body: q ? Like(`%${q}%`) : null,
+        name: q ? Like(`%${q}%`) : null,
+      },
+    });
   }
 
   findOpportunity(id: number): Promise<Opportunity> {
