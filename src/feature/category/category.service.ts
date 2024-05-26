@@ -15,8 +15,10 @@ export class CategoryService {
     return this.categoryRepository.find();
   }
 
-  createCategory(createCategoryDto: CreateCategoryDto): Promise<Category> {
-    const isCategoryExist = this.categoryRepository.findOneBy({
+  async createCategory(
+    createCategoryDto: CreateCategoryDto,
+  ): Promise<Category> {
+    const isCategoryExist = await this.categoryRepository.findOneBy({
       name: this.createCategory.name,
     });
 

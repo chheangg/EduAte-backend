@@ -13,7 +13,6 @@ export class CategoryController {
 
   @Post()
   createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    console.log(createCategoryDto);
     return this.categoryService.createCategory(createCategoryDto);
   }
 }
