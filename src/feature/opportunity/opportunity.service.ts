@@ -62,11 +62,26 @@ export class OpportunityService {
         },
       );
     }
-    return queryBuilder.getMany();
+
+    return queryBuilder
+      .leftJoinAndSelect('opportunity.category', 'category')
+      .leftJoinAndSelect('opportunity.location', 'location')
+      .leftJoinAndSelect('opportunity.tags', 'tags')
+      .getMany();
   }
 
   findOpportunity(id: number): Promise<Opportunity> {
-    return this.opportunityRepository.findOneBy({ id });
+    console.log(id);
+    return this.opportunityRepository.findOne({
+      relations: {
+        category: true,
+        location: true,
+        tags: true,
+      },
+      where: {
+        id: id,
+      },
+    });
   }
 
   async createOpportunity(

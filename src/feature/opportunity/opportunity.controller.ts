@@ -6,18 +6,13 @@ import {
   ParseArrayPipe,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { OpportunityService } from './opportunity.service';
 import { CreateOpportunityDto } from './create-opportunity.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 
 @Controller('/opportunities')
 export class OpportunityController {
   constructor(private readonly opportunityService: OpportunityService) {}
-
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAllOpportunitiesWithQueries(
     @Query('q') q: string,
@@ -29,7 +24,6 @@ export class OpportunityController {
     )
     tag_ids?: number[],
   ) {
-    console.log(tag_ids);
     return this.opportunityService.findAllOpportunitiesWithQueries({
       q,
       category_id,
@@ -39,7 +33,7 @@ export class OpportunityController {
   }
 
   @Get('/:opportunity_id')
-  findOpportunity(@Param('opprtunity_id') opportunity_id: number) {
+  findOpportunity(@Param('opportunity_id') opportunity_id: number) {
     return this.opportunityService.findOpportunity(opportunity_id);
   }
 
